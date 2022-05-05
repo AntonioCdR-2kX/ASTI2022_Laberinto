@@ -7,25 +7,15 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include "TofSensors.h"
-#include "funcionesSetup.h"
-#include "PCF8575.h"
-#include <PIDController.hpp>
-#include <QTRSensors.h>
-
-
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 64 // OLED display height, in pixels
-#define OLED_RESET     4 // Reset pin # (or -1 if sharing Arduino reset pin)
-#define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 
 #define TOF_ADRESS_FRONT 0x30
 #define TOF_ADRESS_LEFT 0x31
 #define TOF_ADRESS_RIGHT 0x32
 
-#define RIGHT 0
-#define LEFT 1
+// Orden para los TOF y los encoders
+#define LEFT 0
+#define RIGHT 1
 #define FRONT 2
-#define LED_BUILTIN 2
 
 // Valores para el tiempo en el que volver a evaluar el estado, 
 // innececesario si aplicamos enconder
@@ -33,33 +23,61 @@
 #define T_GIROI 525
 #define T_GIRO180 2000
 
-// --------------- Movidas para la salida pwm --------------
-#define PWM_FREC 5000 //frecuencia de la senal pwm
-#define PWM_RES 8// resolucion de la senal pwm. En nuestro caso 8 bits (0 - 255)
-#define PWM_CH_D 0 //canal para el pwm del motor derecho 
-#define PWM_CH_I 1 //canal para el pwm del motor izquierdo
+//Para el display
+//#define PRINT_POSITION
 
-// Variables PID
-const int distanciaOPT = 150;
+// Distancias y angulos de giro
+#define GIRO90_D 90
+#define GIRO90_I 90
+#define GIRO180_D 180
+#define DISTANCIA_BACK 40
+#define DISTANCIA_FOR 100
 
-// Variables para giros
-#define MILLIS_GIRO90 900
-#define MILLIS_PARAR 900
-#define MILLIS_RETRO 900
-#define MILLIS_AVANZ 900
+// ----------------- Parametros robot -------
 
-#define MILLIS_LLEGADA_A_DESTINO 900
+    // Dimensions (mm)
+    const float ROBOT_WIDTH = 83.0;
+    const float ROBOT_RADIUS = 30.0;
 
+    // Motor ticks por grado
+    const float TICKS_PER_DEGREE = 4.0;
 
-enum modos
-{
-    ESPERANDO,
-    MOVIENDOSE,
-    LLEGADA_A_DESTINO, //Se mueve un poco mas hacia delante y despues vuelve a pasar a estado esperando
-    ORDEN_RECIBIDA,
-    ERROR_
+// ----------------- Parametros PID -------
 
-};
+    // Parametros PID Pared
+    #define kp 0.5
+    #define ki 0.0
+    #define kd 0.0
+    #define D_OPT 150
+
+    // Valores para la velocidad seguir pared
+    #define V_MAX 150
+    #define V_BASE 50
+    
+    // Parametros PID Encoders
+    #define kp_EN 0.5
+    #define ki_EN 0.0
+    #define kd_EN 0.0
+
+    //Punto de saturacion para el PID
+    #ifndef VEL_MAX_ENC
+        #define VEL_MAX_ENC 255
+    #endif
+
+// ----------------- Display -----------------
+
+    #define SCREEN_WIDTH 128 
+    #define SCREEN_HEIGHT 64 
+    #define OLED_RESET     4 
+    #define SCREEN_ADDRESS 0x3
+
+// ----------------- PWM ---------------------
+
+    #define PWM_FREC 5000 //frecuencia de la senal pwm
+    #define PWM_RES 8// resolucion de la senal pwm. En nuestro caso 8 bits (0 - 255)
+    #define PWM_CH_D 0 //canal para el pwm del motor derecho 
+    #define PWM_CH_I 1 //canal para el pwm del motor izquierdo
+
 
 
 #define NUM_MODOS_DISPLAY 6

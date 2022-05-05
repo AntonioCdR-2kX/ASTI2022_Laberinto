@@ -3,22 +3,19 @@
 #ifndef _ENCODER_
 #define _ENCODER_
 #include<Arduino.h>
-#include <arm.h>
-#include <SimplyAtomic.h>
 
-#include "Config.h"
 
-class Encoder
+class Encoder_p
 {
     private:
         int pin_canal_A;
         int pin_canal_B;
-        volatile int posicion_tics;
+        int posicion_tics;
         float posicion_grados;
         float grados_por_tic;
 
     public:
-        Encoder(int, int, float);
+        Encoder_p(int, int, float);
         void init();
         void actualizar_posicion(); //Llamar con interrupcion en canal A.
         float getPosicionGrados();
@@ -27,7 +24,6 @@ class Encoder
         void setPosicionGrados(int);
 
 };
-
 
 //HOli
 #endif

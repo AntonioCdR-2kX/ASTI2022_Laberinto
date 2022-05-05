@@ -1,7 +1,7 @@
 #ifndef Motor_h
 #define Motor_h
 
-#include "Config.h""
+#include "Config.h"
 
 class Motor
 {

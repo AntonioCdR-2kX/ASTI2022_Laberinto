@@ -25,6 +25,14 @@
 #define PIN_MOTOR_I_IN2 17
 #define PIN_MOTOR_I_PWM 19
 
+//Encoder derecho
+#define PIN_ENCODER_D_CA 26 //Pin encoder derecha canal A
+#define PIN_ENCODER_D_CB 27 //Pin encoder derecha canal B
+
+//Encoder izquierdo
+#define PIN_ENCODER_I_CA 26 //Pin encoder izquierda canal A
+#define PIN_ENCODER_I_CB 27 //Pin encoder izquierda canal B
+
 //Sensor qtr
 #define PIN_QTR_LEDON 2
 
@@ -34,8 +42,6 @@
 #define PIN_QTR_L3   14
 #define PIN_QTR_L4   32
 #define PIN_QTR_L5   12
-
-
 
 
 #endif

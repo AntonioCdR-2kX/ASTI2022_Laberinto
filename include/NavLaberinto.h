@@ -12,50 +12,74 @@
 class NavLaberinto
 {
     private:
-        int distancia;
-        float output;
+        //Variables para el PID pared
+        float error_D;
+        float error_D_prev;
+        float error_D_integral = 0.0;
+        float error_D_deriv = 0.0;
+
+        //velocidad de los motores
+        int vel_d, vel_i; 
+
+        //variables de control
+        double input, output, setpoint;
 
         //Array con los dos motores a controlar
-        Motor* MisMotores[2];
+        Motor* misMotores[2];
         //Array con los dos encoders 
-        Encoder* MisEncoders[2];
+        Encoder_p* misEncoders[2];
 
         //Pid
-        PID::PIDController<float>* myPID ;
-        PID::PIDParameters<float> parametros_PID;
+//        PID::PIDController<float>* myPID ;
+//        PID::PIDParameters<float> parametros_PID;
         
         //Parametros de la velocidad
-        uint8_t vel_base; 
-        uint8_t vel_max;
-        uint8_t vel_pid;
+        int vel_base; 
+        int vel_max;
+        int vel_pid;
 
     public:
 
         //Constructor
-        NavLaberinto(Motor*, Motor*);    
-        void setVelBase(uint8_t a){vel_base = a;};
-        void setPIDparam(PID::PIDParameters<float> a)
-            {
-                parametros_PID = a;
-                myPID->SetTunings(a);
-                };
-        void parar();
-        void avanzar();
-        void girar(bool);
-        void retroceder();
-        
-        float getOutput();
-        float getPos(){return myPID->Input;};
-        float getKp(){return myPID->GetKp();};
-        float getKd(){return myPID->GetKd();};
-        float getKi(){return myPID->GetKi();};
-        
-        void compute(int);
-        void giro90(bool);
-        void seguirpared();
+        NavLaberinto(Motor*, Motor*, Encoder_p*, Encoder_p*);  
 
-        void encompute();
-        void 
+// Inicializa el pid y algunas cosas mas
+        void init();
+
+        // Avanza una distancia determinada
+        // (metodo bloqueante)
+        bool avanzarDistancia(float );
+        
+        // Gira X grados sobre sí mismo
+        // (metodo bloqueante)
+        bool girar(float beta);
+
+        // Setea la posicion de los dos motores independientemente
+        // Me devuelve 1 si ha llegado y 0 si no es así
+        bool setPosition(float setpoint_l, float setpoint_r);
+
+        // Resetea la posicion relativa de los encoders
+        void resetEncoders();
+    
+        //Para el robot
+        void parar();
+
+        // ######### Geters #########
+
+        // Devuelve array de encoders
+        Encoder_p*& getEncoders(){return *misEncoders;};
+
+        // Devuelve array de motores
+        Motor*& getMotores(){return *misMotores;};
+
+        int getVelI(){return vel_i;};
+
+        int getVelD(){return vel_d;};
+
+        void seguirpared(int midistancia_D);
+
+
+
 
 };
 

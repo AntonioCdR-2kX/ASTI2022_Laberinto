@@ -72,7 +72,7 @@ void TofSensors::init()
     pinExtensor_->digitalWrite(myXSHUTpins[LEFT], LOW);
     delay(10);   
 }
-
+/*
 void TofSensors::printMeasurements()
 {
     int i;
@@ -111,9 +111,14 @@ int* TofSensors::measureDistance()
     }   
     return distance; 
 }
-
+*/
 int TofSensors::getDistance(int pos)
 {
-    this->measureDistance();
+    myTofSensors[pos]->rangingTest(&myMeasurements[pos], false);
+    if(myMeasurements[pos].RangeStatus != 4) {       
+        distance[pos] = myMeasurements[pos].RangeMilliMeter;
+    } else {
+        distance[pos] = -1;
+    }
     return distance[pos];
 }

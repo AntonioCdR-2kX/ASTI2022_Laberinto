@@ -5,13 +5,13 @@
 // --------------- Pines -----------------
 
 //XShut de los sensores tof
-#define pin_xshut_front P2 //P3
-#define pin_xshut_right P1 //P2
-#define pin_xshut_left P3  //P1
+#define pin_xshut_front P3 //P3 right P2
+#define pin_xshut_right P1 //P2 front P1
+#define pin_xshut_left P2  //P1 left P3
 
 //Encoder derecho
-#define PIN_ENCODER_D_CA 26 //Pin encoder derecha canal A
-#define PIN_ENCODER_D_CB 27 //Pin encoder derecha canal B
+#define PIN_ENCODER_D_CA 25 //Pin encoder derecha canal A
+#define PIN_ENCODER_D_CB 5 //Pin encoder derecha canal B
 
 //Encoder izquierdo
 #define PIN_ENCODER_I_CA 26 //Pin encoder izquierda canal A
@@ -24,14 +24,6 @@
 #define PIN_MOTOR_I_IN1 18
 #define PIN_MOTOR_I_IN2 17
 #define PIN_MOTOR_I_PWM 19
-
-//Encoder derecho
-#define PIN_ENCODER_D_CA 26 //Pin encoder derecha canal A
-#define PIN_ENCODER_D_CB 27 //Pin encoder derecha canal B
-
-//Encoder izquierdo
-#define PIN_ENCODER_I_CA 26 //Pin encoder izquierda canal A
-#define PIN_ENCODER_I_CB 27 //Pin encoder izquierda canal B
 
 //Sensor qtr
 #define PIN_QTR_LEDON 2

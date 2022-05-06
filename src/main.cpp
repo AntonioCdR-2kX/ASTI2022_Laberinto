@@ -51,7 +51,7 @@ PCF8575 pinExtensor =  PCF8575(0x20);
 //Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET); 
 
 //Objeto que maneja los 3 sensores tof
-TofSensors MySensors(1, 2, 3, &pinExtensor); 
+TofSensors MySensors(pin_xshut_front, pin_xshut_right, pin_xshut_left, &pinExtensor); 
 
 //Objetos para los dos motores (NO control de posicion)
 Motor Motor_derecho(PIN_MOTOR_D_IN1, PIN_MOTOR_D_IN2, PIN_MOTOR_D_PWM, PWM_CH_D, PWM_FREC, PWM_RES); //Motor derecho
@@ -85,7 +85,7 @@ void setup(){
 //    Wire.setClock(800000); //Igual esto es lo que fuerza la velocidad del reloj
 
     // Inicializamos el serial
-    Serial.begin(115200);
+    Serial.begin(9600);
 
     // Inicializamos el display
     display_config();
@@ -123,19 +123,23 @@ void loop(void)
   }
   */
   // leo sensores
-  if(MySensors.getDistance(FRONT)!=-1) distancias[FRONT] = MySensors.getDistance(FRONT);
-  if(MySensors.getDistance(RIGHT)!=-1) distancias[RIGHT] = MySensors.getDistance(RIGHT);
-  if(MySensors.getDistance(LEFT)!=-1) distancias[LEFT] = MySensors.getDistance(LEFT);
+  //if(MySensors.getDistance(FRONT)!=-1) distancias[FRONT] = MySensors.getDistance(FRONT);
+  //if(MySensors.getDistance(RIGHT)!=-1) distancias[RIGHT] = MySensors.getDistance(RIGHT);
+  //if(MySensors.getDistance(LEFT)!=-1) distancias[LEFT] = MySensors.getDistance(LEFT);
 
-  /*
+  distancias[FRONT] = MySensors.getDistance(FRONT);
+  distancias[RIGHT] = MySensors.getDistance(RIGHT);
+  distancias[LEFT] = MySensors.getDistance(LEFT);
+
+  
   // Imprimo las distancias recibidas de Tof
   Serial.print("DistanciaF:");
-  Serial.println(distanciaF);
+  Serial.println(distancias[FRONT]);
   Serial.print("DistanciaD:");
-  Serial.println(distanciaD);
+  Serial.println(distancias[RIGHT]);
   Serial.print("DistanciaI:");
-  Serial.println(distanciaI);
-  */
+  Serial.println(distancias[LEFT]);
+  
 
 
   // casuística:

@@ -22,9 +22,10 @@ void NavLaberinto::init()
     vel_pid=0;
 }
 
-bool NavLaberinto::setPosition(float setpoint_l, float setpoint_r)
+bool NavLaberinto::setPosition(float XD, float setpoint_r)
 {
     float gradosl, gradosr;
+    float setpoint_l=-XD;
     float error_l, error_r;
     float error_l_prev, error_r_prev;
     float error_l_integral = 0.0, error_r_integral = 0.0;
@@ -40,7 +41,7 @@ bool NavLaberinto::setPosition(float setpoint_l, float setpoint_r)
 
     // Se ejecuta el siguiente while hasta que se alcance un error determinado
     // TODO: Deberia haber un timeout para evitar que se quede en un bucle infinito
-    if((error_l > 1.0 || error_l< -1.0) || (error_r > 1.0 || error_r < -1.0))
+    if((error_l > 15.0 || error_l< -15.0) || (error_r > 15.0 || error_r < -15.0))
     {
         // Lectura
         gradosl = misEncoders[LEFT]->getPosicionGrados();

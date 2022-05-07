@@ -19,9 +19,9 @@
 
 // Valores para el tiempo en el que volver a evaluar el estado, 
 // innececesario si aplicamos enconder
-#define T_GIROD 750
-#define T_GIROI 525
-#define T_GIRO180 2000
+//#define T_GIROD 750
+//#define T_GIROI 525
+//#define T_GIRO180 2000
 
 //Para el display
 //#define PRINT_POSITION

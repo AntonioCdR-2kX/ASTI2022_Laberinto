@@ -10,12 +10,12 @@
 #define pin_xshut_left P2  //P1 left P3
 
 //Encoder derecho
-#define PIN_ENCODER_D_CA 25 //Pin encoder derecha canal A
-#define PIN_ENCODER_D_CB 5 //Pin encoder derecha canal B
+#define PIN_ENCODER_D_CA 27 //Pin encoder derecha canal A
+#define PIN_ENCODER_D_CB 26 //Pin encoder derecha canal B
 
 //Encoder izquierdo
-#define PIN_ENCODER_I_CA 26 //Pin encoder izquierda canal A
-#define PIN_ENCODER_I_CB 27 //Pin encoder izquierda canal B
+#define PIN_ENCODER_I_CA 5 //Pin encoder izquierda canal A
+#define PIN_ENCODER_I_CB 25 //Pin encoder izquierda canal B
 
 //Driver de motores
 #define PIN_MOTOR_D_IN1  13

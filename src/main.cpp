@@ -39,6 +39,8 @@ bool enc_END=0;
 int tiempo=0;
 int tiempo_obj=0;
 int t_backON=0;
+int tiempo_par=0;
+bool band=0;
 
 
 
@@ -115,6 +117,7 @@ void setup(){
 // No usado
 void loop(void)
 {
+  delay(100);
   /*
   // solo para entrar en el laberinto
   if(contador == 0){
@@ -123,16 +126,17 @@ void loop(void)
   }
   */
   // leo sensores
-  //if(MySensors.getDistance(FRONT)!=-1) distancias[FRONT] = MySensors.getDistance(FRONT);
-  //if(MySensors.getDistance(RIGHT)!=-1) distancias[RIGHT] = MySensors.getDistance(RIGHT);
-  //if(MySensors.getDistance(LEFT)!=-1) distancias[LEFT] = MySensors.getDistance(LEFT);
+  if(MySensors.getDistance(FRONT)!=-1) distancias[FRONT] = MySensors.getDistance(FRONT);
+  if(MySensors.getDistance(RIGHT)!=-1) distancias[RIGHT] = MySensors.getDistance(RIGHT);
+  if(MySensors.getDistance(LEFT)!=-1) distancias[LEFT] = MySensors.getDistance(LEFT);
 
-  distancias[FRONT] = MySensors.getDistance(FRONT);
-  distancias[RIGHT] = MySensors.getDistance(RIGHT);
-  distancias[LEFT] = MySensors.getDistance(LEFT);
+  //distancias[FRONT] = MySensors.getDistance(FRONT);
+  //distancias[RIGHT] = MySensors.getDistance(RIGHT);
+  //distancias[LEFT] = MySensors.getDistance(LEFT);
 
   
   // Imprimo las distancias recibidas de Tof
+  /*
   Serial.print("DistanciaF:");
   Serial.println(distancias[FRONT]);
   Serial.print("DistanciaD:");
@@ -146,9 +150,55 @@ void loop(void)
   Serial.println(enc_END);
   Serial.print("Estado: ");
   Serial.println(run_mode);
-  
+  */
+
+tiempo=millis();
+
+  if(distancias[FRONT]<=20){
+    if(band==0){
+      tiempo_par=millis()+4000;
+      band=1;
+    }
+    else if(band==1 && (tiempo >= tiempo_par)){
+      run_mode=RUN_MODE_GOBACK;
+      tiempo_obj=millis()+500;
+    }
+  }
+  else if(tiempo>=tiempo_obj){
+    band=0;
+    logica();
+  }
 
 
+switch (run_mode) {
+    case RUN_MODE_DEFAULT:
+      
+
+      break;
+    case RUN_MODE_PID:
+      mismotores.seguirpared(distancias[RIGHT]);
+
+      break;
+    case RUN_MODE_GORIGHT:
+      mismotores.girar(HORARIO);
+        
+      break;
+    case RUN_MODE_GOLEFT:
+      mismotores.girar(ANTIHORARIO);
+
+      break;
+    case RUN_MODE_GO180:
+      mismotores.girar(HORARIO);
+    
+      break;
+    case RUN_MODE_GOBACK:
+      mismotores.retroceder();
+    
+      break;
+  }
+
+
+/*
   // casuística:
   tiempo=millis(); // variable de tiempo que actualizamos en cada bucle
 
@@ -165,7 +215,7 @@ void loop(void)
   }
   else{
     t_backON=millis();
-    if(!enc_START && !enc_END){
+    if(!enc_END){
       // Resetamos los valores de laberinto
       if(distancias[RIGHT]>=200){
         run_mode=RUN_MODE_GORIGHT;
@@ -185,7 +235,9 @@ void loop(void)
       }
     }
   }
+*/
 
+/*
   switch (run_mode) {
     case RUN_MODE_DEFAULT:
       mismotores.parar();
@@ -195,33 +247,65 @@ void loop(void)
       mismotores.seguirpared(distancias[RIGHT]);
     break;
 
-    case RUN_MODE_GORIGHT:
-      if(!enc_START) enc_END=mismotores.avanzarDistancia(DISTANCIA_FOR);
-      else enc_START=mismotores.girar(GIRO90_D);
 
+    case RUN_MODE_GORIGHT:
+      while(!enc_END){
+        enc_END=mismotores.avanzarDistancia(DISTANCIA_FOR_1);
+      }
+      enc_END=0;
+      while(!enc_END){
+        enc_END=mismotores.girar(GIRO90_D);
+      }
+      enc_END=0;
+      while(!enc_END){
+        enc_END=mismotores.avanzarDistancia(DISTANCIA_FOR_2);
+      }
+      enc_END=0;
+      
     break;
 
     case RUN_MODE_GOLEFT:
-      
+      while(!enc_END){
+        enc_END=mismotores.avanzarDistancia(DISTANCIA_FOR_1);
+      }
+      enc_END=0;
+      while(!enc_END){
+        enc_END=mismotores.girar(-GIRO90_D);
+      }
+      enc_END=0;
+      while(!enc_END){
+        enc_END=mismotores.avanzarDistancia(DISTANCIA_FOR_2);
+      }
+      enc_END=0;
+      //enc_END=1;
+      /*
       if(!enc_START) enc_END=mismotores.avanzarDistancia(DISTANCIA_FOR);
       else enc_START=mismotores.girar(GIRO90_I);
+      */
+     /*
     break;
 
     case RUN_MODE_GO180:
-      enc_START=mismotores.girar(GIRO180_D);
-      enc_END=enc_START;
+      while(!enc_END){
+        enc_END=mismotores.girar(GIRO180_D);
+      }
+      enc_END=0;
+      //enc_END=enc_START;
     break;
 
     case RUN_MODE_GOBACK:
-      enc_START=mismotores.avanzarDistancia(DISTANCIA_BACK);
-      enc_END=enc_START;
+      while(!enc_END){
+        enc_END=mismotores.avanzarDistancia(DISTANCIA_BACK);
+      }
+      enc_END=0;
+      //enc_END=enc_START;
     break;
 
     case RUN_MODE_STOP:
       mismotores.parar();
     break;
   }
-
+*/
 #ifdef PRINT_POSITION
 
 display.clearDisplay();
@@ -238,3 +322,21 @@ display.display();
 
 }
 
+void logica(){
+   if(distancias[RIGHT]>=200){
+    run_mode=RUN_MODE_GORIGHT;
+    tiempo_obj=millis()+T_GIROD;
+  }
+  else if ((distancias[FRONT] <= 80) && (distancias[FRONT] >= 40) && (misdistancias[LEFT] >= 200)){
+    run_mode=RUN_MODE_GOLEFT;
+    tiempo_obj=millis()+T_GIROI;
+  }
+  else if (distancias[LEFT] <=200 && (distancias[RIGHT] <= 200) && (misdistancias[FRONT] <= 80)) {
+    run_mode=RUN_MODE_GO180;
+    tiempo_obj=millis()+T_GIRO180;
+  }
+  else{
+    run_mode=RUN_MODE_PID;
+    tiempo_obj=millis();
+  }
+}

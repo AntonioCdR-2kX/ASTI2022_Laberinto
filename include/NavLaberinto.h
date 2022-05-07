@@ -52,7 +52,7 @@ class NavLaberinto
         
         // Gira X grados sobre sí mismo
         // (metodo bloqueante)
-        bool girar(float beta);
+        //bool girar(float beta);
 
         // Setea la posicion de los dos motores independientemente
         // Me devuelve 1 si ha llegado y 0 si no es así
@@ -78,9 +78,9 @@ class NavLaberinto
 
         void seguirpared(int midistancia_D);
 
-
-
-
+        void retroceder();
+        void avanzar();
+        void girar(bool sentido);
 };
 
 #endif

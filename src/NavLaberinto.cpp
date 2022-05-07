@@ -39,6 +39,11 @@ bool NavLaberinto::setPosition(float XD, float setpoint_r)
     error_l = setpoint_l - gradosl;
     error_r = setpoint_r - gradosr;
 
+    Serial.print("errol_l: ");
+    Serial.print(error_l);
+    Serial.print(" errol_r: ");
+    Serial.println(error_r);
+
     // Se ejecuta el siguiente while hasta que se alcance un error determinado
     // TODO: Deberia haber un timeout para evitar que se quede en un bucle infinito
     if((error_l > 15.0 || error_l< -15.0) || (error_r > 15.0 || error_r < -15.0))
@@ -102,13 +107,13 @@ bool NavLaberinto::avanzarDistancia(float distance)
     float angle = 360.0*distance/(ROBOT_RADIUS*PI);
     return this->setPosition(angle, angle);
 }
-
+/*
 bool NavLaberinto::girar(float beta)
 {
     float phi = ROBOT_WIDTH*beta/ROBOT_RADIUS;
     return this->setPosition(phi, -phi); 
 }
-
+*/
 void NavLaberinto::resetEncoders()
 {
     misEncoders[LEFT]->resetPosicion();
@@ -194,50 +199,50 @@ void NavLaberinto::parar()
     
 }
 */
-/*
+
 void NavLaberinto::retroceder()
 {
-    MisMotores[RIGHT]->setBack();
-    MisMotores[LEFT]->setBack();
-    MisMotores[RIGHT]->setPWM(vel_base);
-    MisMotores[LEFT]->setPWM(vel_base) ;
+    misMotores[RIGHT]->setBack();
+    misMotores[LEFT]->setBack();
+    misMotores[RIGHT]->setPWM(vel_base);
+    misMotores[LEFT]->setPWM(vel_base) ;
 
-    vTaskDelay(MILLIS_RETRO / portTICK_PERIOD_MS);
+    //vTaskDelay(MILLIS_RETRO / portTICK_PERIOD_MS);
     // puede que haya que poner uno en cada dirección
     
 }
-*/
-/*
+
+
 void NavLaberinto::avanzar()
 {
-    MisMotores[RIGHT]->setFwd();
-    MisMotores[LEFT]->setFwd();
-    MisMotores[RIGHT]->setPWM(vel_base);
-    MisMotores[LEFT]->setPWM(vel_base) ;
+    misMotores[RIGHT]->setFwd();
+    misMotores[LEFT]->setFwd();
+    misMotores[RIGHT]->setPWM(vel_base);
+    misMotores[LEFT]->setPWM(vel_base) ;
 
-    vTaskDelay(MILLIS_AVANZ / portTICK_PERIOD_MS);
+    //vTaskDelay(MILLIS_AVANZ / portTICK_PERIOD_MS);
       // puede que haya que poner uno en cada dirección
     
 }
-*/
-/*
+
+
 void NavLaberinto::girar(bool sentido)
 {
     if(sentido == HORARIO)
     {
-        MisMotores[RIGHT]->setFwd();
-        MisMotores[LEFT]->setBack();
-        MisMotores[RIGHT]->setPWM(vel_base);
-        MisMotores[LEFT]->setPWM(vel_base) ;
+        misMotores[RIGHT]->setFwd();
+        misMotores[LEFT]->setBack();
+        misMotores[RIGHT]->setPWM(vel_MIN);
+        misMotores[LEFT]->setPWM(vel_MAX) ;
     }else
     {
-        MisMotores[RIGHT]->setBack();
-        MisMotores[LEFT]->setFwd();
-        MisMotores[RIGHT]->setPWM(vel_base);
-        MisMotores[LEFT]->setPWM(vel_base) ;
+        misMotores[RIGHT]->setBack();
+        misMotores[LEFT]->setFwd();
+        misMotores[RIGHT]->setPWM(vel_MAX);
+        misMotores[LEFT]->setPWM(vel_MIN) ;
     }
 }
-*/
+
 /*
 void NavLaberinto::giro90(bool sentido)
 {

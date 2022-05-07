@@ -46,14 +46,14 @@
 // ----------------- Parametros PID -------
 
     // Parametros PID Pared
-    #define kp 3.2
+    #define kp 1.2
     #define ki 0.0
-    #define kd 3.2
-    #define D_OPT 100
+    #define kd 1.2
+    #define D_OPT 120
 
     // Valores para la velocidad seguir pared
     #define V_MAX 200
-    #define V_BASE 100
+    #define V_BASE 150
 
     #define vel_MAX 120
     #define vel_MIN 40

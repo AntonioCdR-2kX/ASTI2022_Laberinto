@@ -137,10 +137,10 @@ void NavLaberinto::seguirpared(int distancia_D)
     error_D_prev = error_D;
 
     // Calculamos el PID para la pared
-    vel_pid = (int) (kp_EN * error_D + ki_EN * error_D_integral + kd_EN * error_D_deriv);
+    vel_pid = (int) (kp * error_D + ki * error_D_integral + kd * error_D_deriv);
 
-    vel_i = vel_base + vel_pid;
-    vel_d = vel_base - vel_pid;
+    vel_i = V_BASE + vel_pid;
+    vel_d = V_BASE - vel_pid;
 
 
     // Se aplican las velocidades
@@ -151,26 +151,30 @@ void NavLaberinto::seguirpared(int distancia_D)
         misMotores[LEFT]->setFwd();
         misMotores[LEFT]->setPWM(vel_i > vel_max? vel_max : vel_i);
     }
-    else{
+    /*else{
         misMotores[LEFT]->setBack();
-        misMotores[LEFT]->setPWM(-vel_d > vel_max? vel_max : -vel_d);
+        misMotores[LEFT]->setPWM(-vel_i > vel_max? vel_max : -vel_i);
     }
-
+*/
     // Motor Derecho
     if (vel_d > 0.0)
     {
         misMotores[RIGHT]->setFwd();
         misMotores[RIGHT]->setPWM(vel_d > VEL_MAX_ENC? VEL_MAX_ENC : vel_d);
     }
-    else
+    /*else
     {
         misMotores[RIGHT]->setBack();
         misMotores[RIGHT]->setPWM(-vel_d > VEL_MAX_ENC? VEL_MAX_ENC : -vel_d);
     }
-
+*/
     // Dejamos los motores libres
 //    misMotores[LEFT]->setFree();
 //    misMotores[RIGHT]->setFree();
+Serial.print("vel_d: ");
+Serial.print(vel_d);
+Serial.print(" vel_i: ");
+Serial.println(vel_i);
 }
 
 
@@ -231,39 +235,39 @@ void NavLaberinto::girar(bool sentido)
     if(sentido == HORARIO)
     {
         misMotores[RIGHT]->setFwd();
-        misMotores[LEFT]->setBack();
+        misMotores[LEFT]->setFwd();
         misMotores[RIGHT]->setPWM(vel_MIN);
         misMotores[LEFT]->setPWM(vel_MAX) ;
     }else
     {
-        misMotores[RIGHT]->setBack();
+        misMotores[RIGHT]->setFwd();
         misMotores[LEFT]->setFwd();
         misMotores[RIGHT]->setPWM(vel_MAX);
         misMotores[LEFT]->setPWM(vel_MIN) ;
     }
 }
 
-/*
+
 void NavLaberinto::giro90(bool sentido)
 {
     if(sentido == HORARIO)
     {
-        MisMotores[RIGHT]->setFwd();
-        MisMotores[LEFT]->setBack();
-        MisMotores[RIGHT]->setPWM(vel_base);
-        MisMotores[LEFT]->setPWM(vel_base) ;
+        misMotores[RIGHT]->setFwd();
+        misMotores[LEFT]->setBack();
+        misMotores[RIGHT]->setPWM(vel_base);
+        misMotores[LEFT]->setPWM(vel_base) ;
     }else
     {
-        MisMotores[RIGHT]->setBack();
-        MisMotores[LEFT]->setFwd();
-        MisMotores[RIGHT]->setPWM(vel_base);
-        MisMotores[LEFT]->setPWM(vel_base) ;
+        misMotores[RIGHT]->setBack();
+        misMotores[LEFT]->setFwd();
+        misMotores[RIGHT]->setPWM(vel_base);
+        misMotores[LEFT]->setPWM(vel_base) ;
     }
 
-    vTaskDelay(MILLIS_GIRO90 / portTICK_PERIOD_MS); // puede que haya que poner uno en cada dirección
+    //vTaskDelay(MILLIS_GIRO90 / portTICK_PERIOD_MS); // puede que haya que poner uno en cada dirección
     
 }
-*/
+
 
 
 

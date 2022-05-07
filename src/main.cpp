@@ -80,7 +80,24 @@ void header_encoderR()
   encoderR.actualizar_posicion();
 }
 
-
+void logica(){
+   if(distancias[RIGHT]>=200){
+    run_mode=RUN_MODE_GORIGHT;
+    tiempo_obj=millis()+T_GIROD;
+  }
+  else if ((distancias[FRONT] <= 80) && (distancias[FRONT] >= 40) && (distancias[LEFT] >= 200)){
+    run_mode=RUN_MODE_GOLEFT;
+    tiempo_obj=millis()+T_GIROI;
+  }
+  else if (distancias[LEFT] <=200 && (distancias[RIGHT] <= 200) && (distancias[FRONT] <= 80)) {
+    run_mode=RUN_MODE_GO180;
+    tiempo_obj=millis()+T_GIRO180;
+  }
+  else{
+    run_mode=RUN_MODE_PID;
+    tiempo_obj=millis();
+  }
+}
 
 void setup(){
 
@@ -117,7 +134,6 @@ void setup(){
 // No usado
 void loop(void)
 {
-  delay(100);
   /*
   // solo para entrar en el laberinto
   if(contador == 0){
@@ -136,7 +152,7 @@ void loop(void)
 
   
   // Imprimo las distancias recibidas de Tof
-  /*
+  
   Serial.print("DistanciaF:");
   Serial.println(distancias[FRONT]);
   Serial.print("DistanciaD:");
@@ -144,6 +160,8 @@ void loop(void)
   Serial.print("DistanciaI:");
   Serial.println(distancias[LEFT]);
 
+  
+/*
   Serial.print("enc_START: ");
   Serial.println(enc_START);
   Serial.print("enc_END: ");
@@ -154,7 +172,7 @@ void loop(void)
 
 tiempo=millis();
 
-  if(distancias[FRONT]<=20){
+  if(distancias[FRONT]<=40){
     if(band==0){
       tiempo_par=millis()+4000;
       band=1;
@@ -173,7 +191,6 @@ tiempo=millis();
 switch (run_mode) {
     case RUN_MODE_DEFAULT:
       
-
       break;
     case RUN_MODE_PID:
       mismotores.seguirpared(distancias[RIGHT]);
@@ -188,7 +205,7 @@ switch (run_mode) {
 
       break;
     case RUN_MODE_GO180:
-      mismotores.girar(HORARIO);
+      mismotores.giro90(HORARIO);
     
       break;
     case RUN_MODE_GOBACK:
@@ -322,21 +339,3 @@ display.display();
 
 }
 
-void logica(){
-   if(distancias[RIGHT]>=200){
-    run_mode=RUN_MODE_GORIGHT;
-    tiempo_obj=millis()+T_GIROD;
-  }
-  else if ((distancias[FRONT] <= 80) && (distancias[FRONT] >= 40) && (misdistancias[LEFT] >= 200)){
-    run_mode=RUN_MODE_GOLEFT;
-    tiempo_obj=millis()+T_GIROI;
-  }
-  else if (distancias[LEFT] <=200 && (distancias[RIGHT] <= 200) && (misdistancias[FRONT] <= 80)) {
-    run_mode=RUN_MODE_GO180;
-    tiempo_obj=millis()+T_GIRO180;
-  }
-  else{
-    run_mode=RUN_MODE_PID;
-    tiempo_obj=millis();
-  }
-}

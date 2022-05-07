@@ -81,6 +81,7 @@ class NavLaberinto
         void retroceder();
         void avanzar();
         void girar(bool sentido);
+        void giro90(bool sentido);
 };
 
 #endif

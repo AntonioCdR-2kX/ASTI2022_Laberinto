@@ -139,6 +139,13 @@ void loop(void)
   Serial.println(distancias[RIGHT]);
   Serial.print("DistanciaI:");
   Serial.println(distancias[LEFT]);
+
+  Serial.print("enc_START: ");
+  Serial.println(enc_START);
+  Serial.print("enc_END: ");
+  Serial.println(enc_END);
+  Serial.print("Estado: ");
+  Serial.println(run_mode);
   
 
 
@@ -160,15 +167,15 @@ void loop(void)
     t_backON=millis();
     if(!enc_START && !enc_END){
       // Resetamos los valores de laberinto
-      if(distancias[RIGHT]>=100){
+      if(distancias[RIGHT]>=200){
         run_mode=RUN_MODE_GORIGHT;
 //        tiempo_obj=millis()+T_GIROD;
       }
-      else if ((distancias[FRONT] <= 40) && (distancias[FRONT] >= 20) && (distancias[LEFT] >= 100)){
+      else if ((distancias[FRONT] <= 80) && (distancias[FRONT] >= 40) && (distancias[LEFT] >= 200)){
         run_mode=RUN_MODE_GOLEFT;
 //        tiempo_obj=millis()+T_GIROI;
       }
-      else if (distancias[LEFT] <=100 && (distancias[RIGHT] <= 100) && (distancias[FRONT] <= 40)) {
+      else if (distancias[LEFT] <=200 && (distancias[RIGHT] <= 200) && (distancias[FRONT] <= 80)) {
         run_mode=RUN_MODE_GO180;
 //        tiempo_obj=millis()+T_GIRO180;
       }
@@ -189,17 +196,15 @@ void loop(void)
     break;
 
     case RUN_MODE_GORIGHT:
-      enc_START=mismotores.girar(GIRO90_D);
-      if(!enc_START){
-        enc_END=mismotores.avanzarDistancia(DISTANCIA_FOR);
-      }
+      if(!enc_START) enc_END=mismotores.avanzarDistancia(DISTANCIA_FOR);
+      else enc_START=mismotores.girar(GIRO90_D);
+
     break;
 
     case RUN_MODE_GOLEFT:
-      enc_START=mismotores.girar(GIRO90_I);
-      if(!enc_START){
-        enc_END=mismotores.avanzarDistancia(DISTANCIA_FOR);
-      }
+      
+      if(!enc_START) enc_END=mismotores.avanzarDistancia(DISTANCIA_FOR);
+      else enc_START=mismotores.girar(GIRO90_I);
     break;
 
     case RUN_MODE_GO180:

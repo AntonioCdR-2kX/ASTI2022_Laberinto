@@ -151,30 +151,31 @@ void NavLaberinto::seguirpared(int distancia_D)
         misMotores[LEFT]->setFwd();
         misMotores[LEFT]->setPWM(vel_i > vel_max? vel_max : vel_i);
     }
-    /*else{
+    else{
         misMotores[LEFT]->setBack();
         misMotores[LEFT]->setPWM(-vel_i > vel_max? vel_max : -vel_i);
     }
-*/
+
     // Motor Derecho
     if (vel_d > 0.0)
     {
         misMotores[RIGHT]->setFwd();
-        misMotores[RIGHT]->setPWM(vel_d > VEL_MAX_ENC? VEL_MAX_ENC : vel_d);
+        misMotores[RIGHT]->setPWM(vel_d > vel_max? vel_max : vel_d);
     }
-    /*else
+    else
     {
         misMotores[RIGHT]->setBack();
-        misMotores[RIGHT]->setPWM(-vel_d > VEL_MAX_ENC? VEL_MAX_ENC : -vel_d);
+        misMotores[RIGHT]->setPWM(-vel_d > vel_max? vel_max : -vel_d);
     }
-*/
+
     // Dejamos los motores libres
 //    misMotores[LEFT]->setFree();
 //    misMotores[RIGHT]->setFree();
-Serial.print("vel_d: ");
+/*Serial.print("vel_d: ");
 Serial.print(vel_d);
 Serial.print(" vel_i: ");
 Serial.println(vel_i);
+*/
 }
 
 
@@ -208,8 +209,8 @@ void NavLaberinto::retroceder()
 {
     misMotores[RIGHT]->setBack();
     misMotores[LEFT]->setBack();
-    misMotores[RIGHT]->setPWM(vel_base);
-    misMotores[LEFT]->setPWM(vel_base) ;
+    misMotores[RIGHT]->setPWM(V_MAX);
+    misMotores[LEFT]->setPWM(V_MAX) ;
 
     //vTaskDelay(MILLIS_RETRO / portTICK_PERIOD_MS);
     // puede que haya que poner uno en cada dirección
@@ -232,7 +233,7 @@ void NavLaberinto::avanzar()
 
 void NavLaberinto::girar(bool sentido)
 {
-    if(sentido == HORARIO)
+    if(sentido == ANTIHORARIO)
     {
         misMotores[RIGHT]->setFwd();
         misMotores[LEFT]->setFwd();

@@ -52,7 +52,7 @@
     #define D_OPT 120
 
     // Valores para la velocidad seguir pared
-    #define V_MAX 200
+    #define V_MAX 255
     #define V_BASE 150
 
     #define vel_MAX 120
